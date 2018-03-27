@@ -25,6 +25,7 @@ workspace "Box2D"
 project "Box2D"
 	kind "SharedLib"
 	language "C++"
+	cppdialect "C++11"
 	files { "Box2D/**.h", "Box2D/**.cpp" }
 	includedirs { "." }
 
@@ -105,6 +106,7 @@ project "GLFW"
 			"glfw/glx_context.c",
 			"glfw/egl_context.c"
 		}
+	links { "X11" }
 
 project "IMGUI"
 	kind "SharedLib"
@@ -114,10 +116,13 @@ project "IMGUI"
 	includedirs { "." }
 	configuration { "macosx" }
 		defines { "GLFW_INCLUDE_GLCOREARB" }
+	-- configuration { "gmake2" }
+	-- 	links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "HelloWorld"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++11"
 	files { "HelloWorld/HelloWorld.cpp" }
 	includedirs { "." }
 	links { "Box2D" }
@@ -125,20 +130,22 @@ project "HelloWorld"
 project "Testbed"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++11"
 	defines { "GLEW_STATIC" }
 	files { "Testbed/**.h", "Testbed/**.cpp" }
 	includedirs { "." }
 	links { "Box2D", "GLFW", "IMGUI"}
+	configuration { "gmake2" }
+		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "Testbed_lib"
 	kind "SharedLib"
 	language "C++"
+	cppdialect "C++11"
 	defines { "GLEW_STATIC" }
 	files { "Testbed/**.h", "Testbed/**.cpp" }
 	includedirs { "." }
 	links { "Box2D", "IMGUI"}
-	configuration { "not windows", "not macosx" }
-    links { "glfw", "GLEW" }
 	configuration { "windows" }
 		links { "GLEW", "glu32", "opengl32", "winmm" }
 	configuration { "macosx" }
@@ -146,3 +153,5 @@ project "Testbed_lib"
 		links { "OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreVideo.framework"}
 	configuration { "gmake" }
 		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
+	configuration { "gmake2" }
+		links { "GL", "GLU", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
