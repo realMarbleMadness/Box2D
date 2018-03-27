@@ -116,8 +116,6 @@ project "IMGUI"
 	includedirs { "." }
 	configuration { "macosx" }
 		defines { "GLFW_INCLUDE_GLCOREARB" }
-	-- configuration { "gmake2" }
-	-- 	links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "HelloWorld"
 	kind "ConsoleApp"
@@ -135,7 +133,7 @@ project "Testbed"
 	files { "Testbed/**.h", "Testbed/**.cpp" }
 	includedirs { "." }
 	links { "Box2D", "GLFW", "IMGUI"}
-	configuration { "gmake2" }
+	configuration { "gmake" }
 		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "Testbed_lib"
@@ -152,6 +150,6 @@ project "Testbed_lib"
 		defines { "GLFW_INCLUDE_GLCOREARB" }
 		links { "OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreVideo.framework"}
 	configuration { "gmake" }
-		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
+		links { "GL", "GLU", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 	configuration { "gmake2" }
 		links { "GL", "GLU", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
