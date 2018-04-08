@@ -18,16 +18,15 @@ workspace "Box2D"
 		targetdir ( "Build/%{_ACTION}/bin/Release" )
 		defines { "NDEBUG" }
 		optimize "On"
-
-	filter { "language:C++", "toolset:gcc" }
-		buildoptions { "-std=c++11" }
+    cppdialect "C++11"
 
 project "Box2D"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
 	cppdialect "C++11"
 	files { "Box2D/**.h", "Box2D/**.cpp" }
 	includedirs { "." }
+	buildoptions { "-fPIC" }
 
 project "GLEW"
 	kind "StaticLib"
@@ -35,6 +34,7 @@ project "GLEW"
 	defines { "GLEW_STATIC" }
 	files { "glew/*.h", "glew/*.c" }
 	includedirs { "." }
+	buildoptions { "-fPIC" }
 
 project "GLFW"
 	kind "StaticLib"
@@ -106,14 +106,15 @@ project "GLFW"
 			"glfw/glx_context.c",
 			"glfw/egl_context.c"
 		}
-	links { "X11" }
+	buildoptions { "-fPIC" }
 
 project "IMGUI"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
 	defines { "GLEW_STATIC" }
 	files { "imgui/*.h", "imgui/*.cpp" }
 	includedirs { "." }
+	buildoptions { "-fPIC" }
 	configuration { "macosx" }
 		defines { "GLFW_INCLUDE_GLCOREARB" }
 	-- configuration { "gmake2" }
@@ -135,7 +136,12 @@ project "Testbed"
 	files { "Testbed/**.h", "Testbed/**.cpp" }
 	includedirs { "." }
 	links { "Box2D", "GLFW", "IMGUI"}
-	configuration { "gmake2" }
+	configuration { "windows" }
+		links { "GLEW", "glu32", "opengl32", "winmm" }
+	configuration { "macosx" }
+		defines { "GLFW_INCLUDE_GLCOREARB" }
+		links { "OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreVideo.framework"}
+	configuration { "linux" }
 		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "Testbed_lib"
@@ -145,13 +151,13 @@ project "Testbed_lib"
 	defines { "GLEW_STATIC" }
 	files { "Testbed/**.h", "Testbed/**.cpp" }
 	includedirs { "." }
-	links { "Box2D", "IMGUI"}
+	links { "Box2D", "GLFW", "IMGUI"}
 	configuration { "windows" }
 		links { "GLEW", "glu32", "opengl32", "winmm" }
 	configuration { "macosx" }
 		defines { "GLFW_INCLUDE_GLCOREARB" }
 		links { "OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreVideo.framework"}
-	configuration { "gmake" }
+	configuration { "linux" }
 		links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 	configuration { "gmake2" }
 		links { "GL", "GLU", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }

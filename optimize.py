@@ -112,6 +112,10 @@ def cost_part_6(positions):
   x, y = positions[-2], positions[-1]
   return (x - box_x_6) ** 2 + (y - box_y_6) ** 2
 
+# params are
+# gravity, friction, restitution
+# then N times of
+# x, y, rotation, width, height, <is gravity used>
 def get_params_part_3(x):
   return np.array((-100, 0.0, 0.65, x[0], x[1], x[2] / 10.0, 1.0, 0.1, 0))
 
@@ -248,6 +252,7 @@ def method_cma():
   import cma
   x0 = np.array([x[0] + 0.5*(x[1]-x[0]) for x in bounds])
   es = cma.fmin(f, x0, 2.0, options={
+                              'verb_log': 0,
                               'popsize': 80,
                               #'tolfun': 1e-2,
                               'maxfevals': args.opt_iters,
