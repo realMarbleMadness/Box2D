@@ -117,8 +117,6 @@ project "IMGUI"
 	buildoptions { "-fPIC" }
 	configuration { "macosx" }
 		defines { "GLFW_INCLUDE_GLCOREARB" }
-	-- configuration { "gmake2" }
-	-- 	links { "GL", "GLU", "GLEW", "X11", "Xrandr", "Xinerama", "Xcursor", "pthread", "dl" }
 
 project "HelloWorld"
 	kind "ConsoleApp"
