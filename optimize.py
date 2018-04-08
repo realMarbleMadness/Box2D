@@ -5,7 +5,12 @@ import time
 
 import numpy as np
 import scipy
+import json
 from scipy.optimize import differential_evolution, basinhopping
+from icecream import ic
+from itertools import chain
+
+TEST_FILE_PREFIX = 'tests/part_'
 
 def get_prog_path_name(name):
   script_path = os.path.abspath(os.path.dirname(__file__))
@@ -112,6 +117,29 @@ def cost_part_6(positions):
   x, y = positions[-2], positions[-1]
   return (x - box_x_6) ** 2 + (y - box_y_6) ** 2
 
+part7_configs = json.load(open(TEST_FILE_PREFIX+'7.json'))
+
+def cost_part_7(positions):
+  x, y = positions[-2], positions[-1]
+  return (x - part7_configs['destination']['x']) ** 2 + (y - part7_configs['destination']['y']) ** 2
+
+def get_bounds_part_7():
+  bounds = part7_configs["bounds"]
+  n_obstacles = part7_configs["n_obstacles"]
+  yo_bound =  np.tile([bounds["x"], bounds["y"], bounds["rotation"]], (n_obstacles, 1))
+  return yo_bound
+
+def get_params_part_7(x):
+  destination = part7_configs['destination']
+  fixed_params = (
+    -100, 0.04, 0.45,
+    destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0,
+    destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0,
+    destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0
+  )
+  obstacles = part7_configs['obstacles']
+  optimized_params = chain( (x[3*i], x[3*i+1], x[3*i+2], o["width"], o["height"], 0)  for i, o in enumerate(obstacles))
+  return np.append(fixed_params, optimized_params)
 # params are
 # gravity, friction, restitution
 # then N times of

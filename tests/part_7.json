@@ -1,0 +1,14 @@
+{
+    "destination": {"x": 10, "y": 10.5},
+    "bounds": {
+        "x": [-40, 20],
+        "y": [0, 40],
+        "rotation": [0, 31.4159265359]
+    },
+    "n_obstacles": 3,
+    "obstacles": [
+        {"width": 4.0, "height": 0.8},
+        {"width": 4.0, "height": 0.8},
+        {"width": 4.0, "height": 0.8}
+    ]
+}
