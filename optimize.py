@@ -10,7 +10,7 @@ from scipy.optimize import differential_evolution, basinhopping
 from icecream import ic
 from itertools import chain
 
-TEST_FILE_PREFIX = 'tests/part_'
+TEST_FILE_PREFIX = 'tests/part'
 
 def get_prog_path_name(name):
   script_path = os.path.abspath(os.path.dirname(__file__))
@@ -117,27 +117,25 @@ def cost_part_6(positions):
   x, y = positions[-2], positions[-1]
   return (x - box_x_6) ** 2 + (y - box_y_6) ** 2
 
-part7_configs = json.load(open(TEST_FILE_PREFIX+'7.json'))
-
 def cost_part_7(positions):
   x, y = positions[-2], positions[-1]
-  return (x - part7_configs['destination']['x']) ** 2 + (y - part7_configs['destination']['y']) ** 2
+  return (x - env_configs['destination']['x']) ** 2 + (y - env_configs['destination']['y']) ** 2
 
 def get_bounds_part_7():
-  bounds = part7_configs["bounds"]
-  n_obstacles = part7_configs["n_obstacles"]
+  bounds = env_configs["bounds"]
+  n_obstacles = env_configs["n_obstacles"]
   yo_bound =  np.tile([bounds["x"], bounds["y"], bounds["rotation"]], (n_obstacles, 1))
   return yo_bound
 
 def get_params_part_7(x):
-  destination = part7_configs['destination']
+  destination = env_configs['destination']
   fixed_params = (
     -100, 0.04, 0.45,
     destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0,
     destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0,
     destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0
   )
-  obstacles = part7_configs['obstacles']
+  obstacles = env_configs['obstacles']
   optimized_params = chain( (x[3*i], x[3*i+1], x[3*i+2], o["width"], o["height"], 0)  for i, o in enumerate(obstacles))
   return np.append(fixed_params, optimized_params)
 # params are
@@ -319,9 +317,10 @@ if __name__ == "__main__":
   parser.add_argument("method", default="random", type=str, nargs='?', choices=method_map.keys())
   parser.add_argument("--opt_iters", default=100, type=int, nargs='?')
   parser.add_argument("--exp_iters", default=1, type=int, nargs='?')
-  parser.add_argument("--part", default='5', type=str, nargs='?', choices=params_map.keys())
+  parser.add_argument("--part", default='7', type=str, nargs='?', choices=params_map.keys())
   args = parser.parse_args()
 
+  env_configs = json.load(open('{}_{}.json'.format(TEST_FILE_PREFIX, args.part)))
   cost_function = cost_map[args.part]
   method = method_map[args.method]
   get_params = params_map[args.part]
@@ -329,6 +328,12 @@ if __name__ == "__main__":
 
   result_err, result_mean, result_stddev, total_time, final_x = run_n(method, args.exp_iters)
 
+  with open('{}_{}_optimized.json'.format(TEST_FILE_PREFIX, args.part), 'w+') as f:
+    for i in range(env_configs["n_obstacles"]):
+      env_configs["obstacles"][i]["x"] = final_x[3*i]
+      env_configs["obstacles"][i]["y"] = final_x[3*i+1]
+      env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
+    json.dump(env_configs, f)
   strres= [str(x) for x in get_params(final_x)]
   print("Final cost is", result_err)
   print("Optimal parameters are", ' '.join(strres))
