@@ -129,14 +129,16 @@ def get_bounds_part_7():
 
 def get_params_part_7(x):
   destination = env_configs['destination']
+  ball = env_config['ball']
   fixed_params = (
     -100, 0.04, 0.45,
-    destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0,
-    destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0,
-    destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0
+    ball['location'][0], ball['location'][1], 0, 0, 0, ball["linear_velocity"][0], ball["linear_velocity"][1],
+    destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0, 0, 0,
+    destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0,
+    destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0
   )
   obstacles = env_configs['obstacles']
-  optimized_params = chain( (x[3*i], x[3*i+1], x[3*i+2], o["width"], o["height"], 0)  for i, o in enumerate(obstacles))
+  optimized_params = chain( (x[3*i], x[3*i+1], x[3*i+2], o["width"], o["height"], 0, 0, 0)  for i, o in enumerate(obstacles))
   return np.append(fixed_params, optimized_params)
 # params are
 # gravity, friction, restitution

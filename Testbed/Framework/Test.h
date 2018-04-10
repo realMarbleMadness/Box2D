@@ -108,6 +108,7 @@ struct Settings
 	std::vector<float> rotations;
 	std::vector<b2Vec2> sizes;
 	std::vector<bool> gravity_on;
+	std::vector<b2Vec2> linear_velocities;
 
 	b2Vec2 p1;
 	b2Vec2 v1;

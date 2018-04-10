@@ -95,7 +95,7 @@ class BulletTest : public Test
 		b2BodyDef bd;
 
 		b2PolygonShape box;
-		for (int i = 0; i < settings->bodies.size(); i++)
+		for (int i = 1; i < settings->bodies.size(); i++)
 		{
 			b2FixtureDef fd;
 
@@ -120,12 +120,12 @@ class BulletTest : public Test
 			//fix->SetRestitution(0.75);
 
 			m_bodies[i]->SetTransform(settings->bodies[i], settings->rotations[i]);
-			m_bodies[i]->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+			m_bodies[i]->SetLinearVelocity(settings->linear_velocities[i]);
 			m_bodies[i]->SetAngularVelocity(0.0f);
 		}
-		m_bullet->SetTransform(b2Vec2(-30.0f, 40.0f), 0.0f);
+		m_bullet->SetTransform(settings->bodies[0], 0.0f);
 		//m_bullet->SetLinearVelocity(b2Vec2(2.2f, 0.0f));
-		m_bullet->SetLinearVelocity(b2Vec2(3.0f, -1.0f));
+		m_bullet->SetLinearVelocity(settings->linear_velocities[0]);
 		//m_bullet->SetLinearVelocity(b2Vec2(20.0f, 0.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 	}

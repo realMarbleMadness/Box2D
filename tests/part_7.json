@@ -10,5 +10,9 @@
         {"width": 4.0, "height": 0.8},
         {"width": 4.0, "height": 0.8},
         {"width": 4.0, "height": 0.8}
-    ]
+    ],
+    "ball": {
+        "location": [-30.0, 40.0],
+        "linear_velocity": [3.0, -1.0]
+    }
 }

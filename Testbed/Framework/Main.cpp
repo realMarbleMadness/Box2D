@@ -444,9 +444,10 @@ extern "C" float *my_func(int argc, char **argv)
 	int skip = 5;
 	for (int i = skip; i < argc; i++)
 	{
-		auto idx = (i - skip) % 6;
+		auto idx = (i - skip) % 8;
 		if (idx == 0)
 		{
+			// Who wrote this fucking initialization thing?
 			settings.bodies.push_back({0.0, 0.0});
 			settings.rotations.push_back({0.0});
 			settings.sizes.push_back({1.0, 0.1});
@@ -472,6 +473,14 @@ extern "C" float *my_func(int argc, char **argv)
 		else if (idx == 5)
 		{
 			settings.gravity_on[settings.bodies.size() - 1] = std::atoi(argv[i]);
+		}
+		else if (idx == 6)
+		{
+			settings.linear_velocities[settings.bodies.size() - 1].x = std::atof(argv[i]);
+		}
+		else if (idx == 7)
+		{
+			settings.linear_velocities[settings.bodies.size() - 1].y = std::atoi(argv[i]);
 		}
 	}
 
