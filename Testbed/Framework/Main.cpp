@@ -440,8 +440,9 @@ extern "C" float *my_func(int argc, char **argv)
 	settings.gravity = argc > 2 ? std::atof(argv[2]) : -100;
 	settings.friction = argc > 3 ? std::atof(argv[3]) : 0.2;
 	settings.rest = argc > 4 ? std::atof(argv[4]) : 0.75;
-
-	int skip = 5;
+	if (argc > 8)
+		settings.visBounds = {std::atof(argv[5]), std::atof(argv[6]), std::atof(argv[7]), std::atof(argv[8])};
+	int skip = 9;
 	for (int i = skip; i < argc; i++)
 	{
 		auto idx = (i - skip) % 8;
@@ -581,11 +582,14 @@ extern "C" float *my_func(int argc, char **argv)
 	auto run_loop = doGUI ? !glfwWindowShouldClose(mainWindow) : true;
 	auto run_sim = true;
 
-	auto xMin = -40.0f;
-	auto xMax = 40.0f;
-	auto yMin = 0.26f;
-	auto yMax = 50.0f;
+	auto xMin = settings.visBounds[0];
+	auto xMax = settings.visBounds[1];
+	auto yMin = settings.visBounds[2];
+	auto yMax = settings.visBounds[3];
 	auto vMin = 0.3f;
+
+	g_camera.m_center.Set((xMin+xMax)/2, (yMin+yMax)/2);
+	g_camera.m_zoom = (xMax-xMin)/60;
 
 	positions.clear();
 	positions.push_back(0.0);

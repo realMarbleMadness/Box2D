@@ -125,21 +125,22 @@ def get_bounds_part_7():
   bounds = env_configs["bounds"]
   n_obstacles = env_configs["n_obstacles"]
   yo_bound =  np.tile([bounds["x"], bounds["y"], bounds["rotation"]], (n_obstacles, 1))
-  ic(yo_bound)
   return yo_bound
 
 def get_params_part_7(x):
   destination = env_configs['destination']
   ball = env_configs['ball']
+  bounds = env_configs["bounds"]
   fixed_params = (
-    -100, 0.04, 0.45,
-    ball['location'][0], ball['location'][1], ball["radius"], ball["radius"], 0, 0, ball["linear_velocity"][0], ball["linear_velocity"][1],
-    destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0, 0, 0,
-    destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0,
-    destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0
+    -9.81, 0.4, 0.2,
+    bounds["x"][0], bounds["x"][1], bounds["y"][0], bounds["y"][1],
+    ball['location'][0], ball['location'][1], 0, ball["radius"], ball["radius"], 1, ball["linear_velocity"][0], ball["linear_velocity"][1],
+    destination['x'], destination['y'] - 1/3 * destination['height'], 0, destination['width'] / 2, 1 / 3 * destination['height'] / 2, 0, 0, 0,
+    destination['x'] + 0.4 * destination['width'] , destination['y'], 0, 0.2 * destination['width'] / 2, destination['height'] / 2, 0, 0, 0,
+    destination['x'] - 0.4 * destination['width'] , destination['y'], 0, 0.2 * destination['width'] / 2, destination['height'] / 2, 0, 0, 0,
   )
   obstacles = env_configs['obstacles']
-  optimized_params = np.array([(x[3*i], x[3*i+1], x[3*i+2], o["width"], o["height"], 0, 0, 0)  for i, o in enumerate(obstacles)]).ravel()
+  optimized_params = np.array([(x[3*i], x[3*i+1], x[3*i+2], o["width"] / 2, o["height"] / 2, 0, 0, 0)  for i, o in enumerate(obstacles)]).ravel()
   return np.append(fixed_params, optimized_params)
 # params are
 # gravity, friction, restitution
