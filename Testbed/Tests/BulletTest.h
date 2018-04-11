@@ -24,47 +24,7 @@
 class BulletTest : public Test
 {
   public:
-	BulletTest()
-	{
-
-		{
-			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 4.0f);
-#if USE_NGON // use an ngon, has friction
-			b2PolygonShape shape;
-			float rad = 0.25;
-			int n = 8;
-			b2Vec2 points[n];
-			for (int i = 0; i < n; i++)
-			{
-				points[i].x = rad * std::sin(2.0 * M_PI * (float(i) / n));
-				points[i].y = rad * std::cos(2.0 * M_PI * (float(i) / n));
-			}
-
-			shape.Set(points, n);
-#else // use circle, has no friction
-			b2CircleShape shape;
-			shape.m_radius = 0.25f;
-#endif
-			//m_x = RandomFloat(-1.0f, 1.0f);
-			m_x = 0.20352793f;
-			bd.position.Set(m_x, 10.0f);
-			bd.bullet = true;
-
-			b2FixtureDef fd;
-
-			fd.shape = &shape;
-			fd.friction = 1.0;
-			fd.restitution = 0.00;
-			fd.density = 1.0f;
-
-			m_bullet = m_world->CreateBody(&bd);
-			//auto fix = m_bullet->CreateFixture(&shape, 100.0f);
-			m_bullet->CreateFixture(&fd);
-			//m_bullet->SetFixedRotation(true);
-		}
-	}
+	BulletTest(){}
 
 	void Launch()
 	{
@@ -123,10 +83,43 @@ class BulletTest : public Test
 			m_bodies[i]->SetLinearVelocity(settings->linear_velocities[i]);
 			m_bodies[i]->SetAngularVelocity(0.0f);
 		}
+		b2BodyDef bdd;
+		bdd.type = b2_dynamicBody;
+		bdd.position.Set(0.0f, 4.0f);
+#if USE_NGON // use an ngon, has friction
+		b2PolygonShape shape;
+		float rad = settings->sizes[0].x;
+		int n = 8;
+		b2Vec2 points[n];
+		for (int i = 0; i < n; i++)
+		{
+			points[i].x = rad * std::sin(2.0 * M_PI * (float(i) / n));
+			points[i].y = rad * std::cos(2.0 * M_PI * (float(i) / n));
+		}
+
+		shape.Set(points, n);
+#else // use circle, has no friction
+		b2CircleShape shape;
+		shape.m_radius = 0.25f;
+#endif
+		//m_x = RandomFloat(-1.0f, 1.0f);
+		m_x = 0.20352793f;
+		bdd.position.Set(m_x, 10.0f);
+		bdd.bullet = true;
+
+		b2FixtureDef fd;
+
+		fd.shape = &shape;
+		fd.friction = 1.0;
+		fd.restitution = 0.00;
+		fd.density = 1.0f;
+
+		m_bullet = m_world->CreateBody(&bdd);
+		//auto fix = m_bullet->CreateFixture(&shape, 100.0f);
+		m_bullet->CreateFixture(&fd);
+		//m_bullet->SetFixedRotation(true);
 		m_bullet->SetTransform(settings->bodies[0], 0.0f);
-		//m_bullet->SetLinearVelocity(b2Vec2(2.2f, 0.0f));
 		m_bullet->SetLinearVelocity(settings->linear_velocities[0]);
-		//m_bullet->SetLinearVelocity(b2Vec2(20.0f, 0.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 	}
 	void Step(Settings *settings)

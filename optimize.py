@@ -133,7 +133,7 @@ def get_params_part_7(x):
   ball = env_configs['ball']
   fixed_params = (
     -100, 0.04, 0.45,
-    ball['location'][0], ball['location'][1], 0, 0, 0, 0, ball["linear_velocity"][0], ball["linear_velocity"][1],
+    ball['location'][0], ball['location'][1], ball["radius"], ball["radius"], 0, 0, ball["linear_velocity"][0], ball["linear_velocity"][1],
     destination['x'], destination['y'] - 0.6, 0, 1.0, 0.4, 0, 0, 0,
     destination['x'] + 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0,
     destination['x'] - 1.4, destination['y'], 0, 0.4, 1.0, 0, 0, 0
