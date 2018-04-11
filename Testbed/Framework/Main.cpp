@@ -452,6 +452,7 @@ extern "C" float *my_func(int argc, char **argv)
 			settings.rotations.push_back({0.0});
 			settings.sizes.push_back({1.0, 0.1});
 			settings.gravity_on.push_back(false);
+			settings.linear_velocities.push_back({0.0, 0.0});
 			settings.bodies[settings.bodies.size() - 1].x = std::atof(argv[i]);
 		}
 		else if (idx == 1)
