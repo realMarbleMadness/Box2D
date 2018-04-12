@@ -1,3 +1,11 @@
 Build/
 imgui.ini
 *.DS_Store
+.idea/
+.vscode/
+.python-version
+Testbed/.gdb_history
+Testbed/outcmaes*
+__pycache__/
+cmake-build-debug/
+tests/*_optimized.json

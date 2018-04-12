@@ -3,3 +3,4 @@ cma==2.5.3
 dlib==19.10.0
 scipy==1.0.1
 icecream
+flask-restful

@@ -9,6 +9,7 @@ import json
 from scipy.optimize import differential_evolution, basinhopping
 from icecream import ic
 from itertools import chain
+import platform
 
 TEST_FILE_PREFIX = 'tests/part'
 
@@ -119,7 +120,7 @@ def cost_part_6(positions):
 
 def cost_part_7(positions):
   x, y = positions[-2], positions[-1]
-  return (x - env_configs['destination']['x']) ** 2 + (y - env_configs['destination']['y']) ** 2
+  return 1e4 * ((x - env_configs['destination']['x']) ** 2 + (y - env_configs['destination']['y']) ** 2)
 
 def get_bounds_part_7():
   bounds = env_configs["bounds"]
@@ -306,6 +307,28 @@ def run_n(f, n):
   costs = np.array(costs)
   return costs.min(), costs.mean(), costs.std(), sum(times), xs[np.argmin(costs)]
 
+def optimize_blocks(env_configs_param, n_iters=500):
+  # Who can believe there's so many things in global?
+  global cost_function, method, get_params, bounds, args, env_configs
+  env_configs = env_configs_param
+  cost_function = cost_part_7
+  method = method_differential_evolution
+  get_params = get_params_part_7
+  bounds = get_bounds_part_7()
+  class WTF:
+    opt_iters = n_iters
+  args = WTF()
+  result_err, result_mean, result_stddev, total_time, final_x = run_n(method, 1)
+  for i in range(env_configs["n_obstacles"]):
+    env_configs["obstacles"][i]["x"] = final_x[3*i]
+    env_configs["obstacles"][i]["y"] = final_x[3*i+1]
+    env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
+  if platform.system() == 'Darwin':
+    strres= [str(x) for x in get_params(final_x)]
+    run_prog_process(['1'] + strres)
+  return env_configs
+
+
 if __name__ == "__main__":
   import argparse
 
@@ -338,10 +361,10 @@ if __name__ == "__main__":
       env_configs["obstacles"][i]["y"] = final_x[3*i+1]
       env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
     json.dump(env_configs, f)
-  strres= [str(x) for x in get_params(final_x)]
   print("Final cost is", result_err)
-  print("Optimal parameters are", ' '.join(strres))
   print("Mean is", result_mean)
   print("Stddev is", result_stddev)
   print("Avg time is", total_time / args.exp_iters)
-  run_prog_process(['1'] + strres)
+  if platform.system() == 'Darwin':
+    strres= [str(x) for x in get_params(final_x)]
+    run_prog_process(['1'] + strres)
