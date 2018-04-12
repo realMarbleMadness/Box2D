@@ -17,12 +17,16 @@ cd Build/gmake/
 make -j -l config=release
 ```
 
-## Example Usage
-
+## How to run
 ```
 python server.py
 ```
-or if you want to tolerent yourself,
+### API
+
+TO BE ADDED
+
+## Simple test
+
 ```
 python optimize.py --part 7 differential_evolution --opt_iters 500
 ```

@@ -307,10 +307,10 @@ def run_n(f, n):
   costs = np.array(costs)
   return costs.min(), costs.mean(), costs.std(), sum(times), xs[np.argmin(costs)]
 
-def optimize_blocks(n_iters=500):
+def optimize_blocks(env_configs_param, n_iters=500):
   # Who can believe there's so many things in global?
   global cost_function, method, get_params, bounds, args, env_configs
-  env_configs = json.load(open('{}_{}.json'.format(TEST_FILE_PREFIX,7)))
+  env_configs = env_configs_param
   cost_function = cost_part_7
   method = method_differential_evolution
   get_params = get_params_part_7
@@ -319,15 +319,14 @@ def optimize_blocks(n_iters=500):
     opt_iters = n_iters
   args = WTF()
   result_err, result_mean, result_stddev, total_time, final_x = run_n(method, 1)
-  with open('{}_{}_optimized.json'.format(TEST_FILE_PREFIX, 7), 'w+') as f:
-    for i in range(env_configs["n_obstacles"]):
-      env_configs["obstacles"][i]["x"] = final_x[3*i]
-      env_configs["obstacles"][i]["y"] = final_x[3*i+1]
-      env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
-    json.dump(env_configs, f)
+  for i in range(env_configs["n_obstacles"]):
+    env_configs["obstacles"][i]["x"] = final_x[3*i]
+    env_configs["obstacles"][i]["y"] = final_x[3*i+1]
+    env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
   if platform.system() == 'Darwin':
     strres= [str(x) for x in get_params(final_x)]
     run_prog_process(['1'] + strres)
+  return env_configs
 
 
 if __name__ == "__main__":
