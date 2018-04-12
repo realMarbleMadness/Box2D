@@ -120,7 +120,7 @@ def cost_part_6(positions):
 
 def cost_part_7(positions):
   x, y = positions[-2], positions[-1]
-  return (x - env_configs['destination']['x']) ** 2 + (y - env_configs['destination']['y']) ** 2
+  return 1e4 * ((x - env_configs['destination']['x']) ** 2 + (y - env_configs['destination']['y']) ** 2)
 
 def get_bounds_part_7():
   bounds = env_configs["bounds"]
