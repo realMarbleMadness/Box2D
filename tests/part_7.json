@@ -1,14 +1,24 @@
 {
-    "destination": {"x": 10, "y": 10.5},
+    "destination": {
+        "x": 0.6,
+        "y": 0.2,
+        "width": 0.15,
+        "height": 0.1
+    },
     "bounds": {
-        "x": [-40, 20],
-        "y": [0, 40],
+        "x": [-0.8, 0.8],
+        "y": [0, 1.6],
         "rotation": [0, 31.4159265359]
     },
     "n_obstacles": 3,
     "obstacles": [
-        {"width": 4.0, "height": 0.8},
-        {"width": 4.0, "height": 0.8},
-        {"width": 4.0, "height": 0.8}
-    ]
+        {"width": 0.05, "height": 0.24},
+        {"width": 0.05, "height": 0.24},
+        {"width": 0.05, "height": 0.24}
+    ],
+    "ball": {
+        "radius": 0.01,
+        "location": [-0.6, 1.5],
+        "linear_velocity": [0.3, -0.1]
+    }
 }
