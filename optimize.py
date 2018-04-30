@@ -314,7 +314,7 @@ def visualize(env_configs_param):
   for i in range(env_configs["n_obstacles"]):
     final_x.append(env_configs["obstacles"][i]["x"])
     final_x.append(env_configs["obstacles"][i]["y"])
-    final_x.append(env_configs["obstacles"][i]["rotation"])
+    final_x.append(env_configs["obstacles"][i]["rotation"]*10)
   strres= [str(x) for x in get_params_part_7(final_x)]
   run_prog_process(['1'] + strres)
 
