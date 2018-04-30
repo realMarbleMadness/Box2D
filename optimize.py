@@ -314,7 +314,8 @@ def visualize(env_configs_param):
   for i in range(env_configs["n_obstacles"]):
     final_x.append(env_configs["obstacles"][i]["x"])
     final_x.append(env_configs["obstacles"][i]["y"])
-    final_x.append(env_configs["obstacles"][i]["rotation"]*10)
+    final_x.append(env_configs["obstacles"][i]["rotation"])
+
   strres= [str(x) for x in get_params_part_7(final_x)]
   run_prog_process(['1'] + strres)
 
@@ -333,7 +334,7 @@ def optimize_blocks(env_configs_param, n_iters=500):
   for i in range(env_configs["n_obstacles"]):
     env_configs["obstacles"][i]["x"] = final_x[3*i]
     env_configs["obstacles"][i]["y"] = final_x[3*i+1]
-    env_configs["obstacles"][i]["rotation"] = final_x[3*i+2] / 10
+    env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
   if platform.system() == 'Darwin':
     strres= [str(x) for x in get_params(final_x)]
     run_prog_process(['1'] + strres)
