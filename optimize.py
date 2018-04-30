@@ -307,6 +307,17 @@ def run_n(f, n):
   costs = np.array(costs)
   return costs.min(), costs.mean(), costs.std(), sum(times), xs[np.argmin(costs)]
 
+def visualize(env_configs_param):
+  global env_configs
+  env_configs = env_configs_param
+  final_x = []
+  for i in range(env_configs["n_obstacles"]):
+    final_x.append(env_configs["obstacles"][i]["x"])
+    final_x.append(env_configs["obstacles"][i]["y"])
+    final_x.append(env_configs["obstacles"][i]["rotation"])
+  strres= [str(x) for x in get_params_part_7(final_x)]
+  run_prog_process(['1'] + strres)
+
 def optimize_blocks(env_configs_param, n_iters=500):
   # Who can believe there's so many things in global?
   global cost_function, method, get_params, bounds, args, env_configs
@@ -360,6 +371,10 @@ if __name__ == "__main__":
       env_configs["obstacles"][i]["x"] = final_x[3*i]
       env_configs["obstacles"][i]["y"] = final_x[3*i+1]
       env_configs["obstacles"][i]["rotation"] = final_x[3*i+2]
+      print ('x: ', final_x[3*i])
+      print ('y: ', final_x[3*i+1])
+      print ('rotation: ', final_x[3*i+2])
+
     json.dump(env_configs, f)
   print("Final cost is", result_err)
   print("Mean is", result_mean)
